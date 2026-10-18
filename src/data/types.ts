@@ -37,3 +37,15 @@ export const admin = {
     username: "admin",
     password: "password123"
 } satisfies User;
+
+export const newBooking = {
+    "firstname": "James",
+    "lastname": "Brown",
+    "totalprice": 111,
+    "depositpaid": true,
+    "bookingdates": {
+        "checkin": "2018-01-01",
+        "checkout": "2019-01-01"
+    },
+    "additionalneeds": "Breakfast"
+} satisfies Book;

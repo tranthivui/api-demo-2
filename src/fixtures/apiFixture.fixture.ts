@@ -1,11 +1,11 @@
 import { APIRequestContext, test as base, expect, request as playwrightRequest } from "@playwright/test";
 import { BASE_URL } from "../paths/paths";
-import { admin, Book, resData, resLogin } from "../data/types";
-type pageFixture = {
+import { admin, Book, newBooking, resData, resLogin } from "../data/types";
+type APIFixture = {
     authAPI: APIRequestContext,
     bookingid: number
 };
-export const test = base.extend<pageFixture>({
+export const test = base.extend<APIFixture>({
     authAPI: async ({ }, use) => {
         const loginContext = await playwrightRequest.newContext({ baseURL: BASE_URL });
         const loginRes = await loginContext.post("/auth", {
@@ -26,19 +26,8 @@ export const test = base.extend<pageFixture>({
         await api.dispose();
     },
     bookingid: async ({ authAPI }, use) => {
-        const book = {
-            "firstname": "James",
-            "lastname": "Brown",
-            "totalprice": 111,
-            "depositpaid": true,
-            "bookingdates": {
-                "checkin": "2018-01-01",
-                "checkout": "2019-01-01"
-            },
-            "additionalneeds": "Breakfast"
-        } satisfies Book;
         const createRes = await authAPI.post("booking", {
-            data: book
+            data: newBooking
         });
         await expect(createRes).toBeOK();
         const resResData: resData = await createRes.json();
