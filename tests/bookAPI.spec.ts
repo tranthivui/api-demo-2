@@ -4,21 +4,13 @@ import { test } from '../src/fixtures/apiFixture.fixture';
 
 test.describe("Verify book API", async () => {
      test("Create bookding",async({authAPI})=>{
-        const book = {
-            "firstname": "James",
-            "lastname": "Brown",
-            "totalprice": 111,
-            "depositpaid": true,
-            "bookingdates": {
-                "checkin": "2018-01-01",
-                "checkout": "2019-01-01"
-            },
-            "additionalneeds": "Breakfast"
-        } satisfies Book;
-        const createRes=await authAPI.post("booking",{
-            data: book
+        const createRes =await authAPI.post("booking",{
+            data: newBooking
         });
         await expect(createRes).toBeOK();
+        const createData: resData =await createRes.json();
+        expect(createData.booking).toEqual(newBooking);
+        expect(typeof(createData.bookingid)).toBe("number");
     })
         
     test('Get booking', async ({ authAPI,bookingid }) => {
